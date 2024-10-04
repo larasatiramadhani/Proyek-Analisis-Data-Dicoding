@@ -30,7 +30,8 @@ def create_byreview_df(df):
     
     return byreview_df
 
-all_df = pd.read_csv("all_data.csv")
+csv_url = 'https://docs.google.com/spreadsheets/d/15D40JfmXEFwwAFVXudHgq9Cka8Erk9--AN-WPFNCHbQ/export?format=csv&gid=1564547850'
+all_df = pd.read_csv(csv_url)
 
 datetime_columns = ["order_purchase_timestamp", "order_delivered_carrier_date"]
 all_df.sort_values(by="order_purchase_timestamp", inplace=True)
