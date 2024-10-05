@@ -6,6 +6,8 @@ from babel.numbers import format_currency
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 
+
+
 sns.set(style='dark')
 st.header('Dicoding Collection :sparkles:')
 
@@ -123,3 +125,95 @@ plt.colorbar(scatter)
 
 # Tampilkan visualisasi di Streamlit
 st.pyplot(fig)
+
+st.subheader('Product with the higher sold and the least sold')
+url = 'https://docs.google.com/spreadsheets/d/1MSHuclurFzm0IuNyCfdWDBgDvgUe9jSaTUkZnTLvc2s/export?format=csv&gid=1431532174'
+product_sales = pd.read_csv(url)
+# Langkah 1: Kelompokkan data berdasarkan product_id dan hitung jumlah penjualan
+product_sales_count = product_sales.groupby('product_id')['quantity'].sum().reset_index()
+
+# Langkah 2: Ambil top 5 product yang terjual paling banyak dan paling sedikit
+top_5_most_sold = product_sales_count.nlargest(5, 'quantity')
+top_5_least_sold = product_sales_count.nsmallest(5, 'quantity')
+
+# Langkah 3: Membuat visualisasi
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+# Visualisasi untuk top 5 produk terjual paling banyak
+sns.barplot(x='quantity', y='product_id', data=top_5_most_sold, ax=axes[0], palette='Greens_d')
+axes[0].set_title('Top 5 Most Sold Products')
+axes[0].set_xlabel('Quantity Sold')
+axes[0].set_ylabel('Product ID')
+
+# Visualisasi untuk top 5 produk terjual paling sedikit
+sns.barplot(x='quantity', y='product_id', data=top_5_least_sold, ax=axes[1], palette='Reds_d')
+axes[1].set_title('Top 5 Least Sold Products')
+axes[1].set_xlabel('Quantity Sold')
+axes[1].set_ylabel('Product ID')
+
+# Menyesuaikan layout agar tidak terpotong
+plt.tight_layout()
+
+# Langkah 4: Tampilkan visualisasi di Streamlit
+st.pyplot(fig)
+
+
+url2 = 'https://docs.google.com/spreadsheets/d/1jLf4tAlvXfsa23IaOPKgivOObJbWNki_gv52n3SO4_g/export?format=csv&gid=948433226'
+purchase_time_df = pd.read_csv(url2)
+
+# Mengonversi kolom order_purchase_timestamp menjadi datetime
+purchase_time_df['order_purchase_timestamp'] = pd.to_datetime(purchase_time_df['order_purchase_timestamp'])
+
+# Membuat kolom baru untuk bulan dan tahun berdasarkan timestamp
+purchase_time_df['purchase_month'] = purchase_time_df['order_purchase_timestamp'].dt.to_period('M')
+
+# Menghitung jumlah order per bulan
+monthly_sales = purchase_time_df.groupby('purchase_month').size()
+
+# Menampilkan hasil fluktuasi penjualan
+st.subheader("Fluktuasi Penjualan per Bulan")
+
+# Langkah 1: Membuat visualisasi menggunakan matplotlib
+fig, ax = plt.subplots(figsize=(10, 6))
+monthly_sales.plot(kind='line', ax=ax, marker='o', color='b')
+ax.set_title('Fluktuasi Penjualan per Bulan')
+ax.set_xlabel('Bulan')
+ax.set_ylabel('Jumlah Order')
+plt.xticks(rotation=45)  # Memutar label sumbu-x agar lebih mudah dibaca
+plt.tight_layout()
+
+# Langkah 2: Deploy visualisasi ke Streamlit
+st.pyplot(fig)
+
+# Langkah 1: Baca data dari Google Sheets
+url3 = 'https://docs.google.com/spreadsheets/d/1pe4ios97MGqXs1vhuSi8ECnkWmIq1CaLkmarcbGkvfc/export?format=csv'
+customer_df = pd.read_csv(url3)
+
+# Langkah 2: Mengelompokkan data dan menghitung jumlah pembeli unik
+top_customers = customer_df.groupby(['customer_city', 'customer_state']).customer_unique_id.nunique().reset_index()
+
+# Memberi nama kolom untuk kejelasan
+top_customers.columns = ['customer_city', 'customer_state', 'num_customers']
+
+# Mengurutkan hasil berdasarkan jumlah pembeli terbanyak
+top_customers_sorted = top_customers.sort_values(by='num_customers', ascending=False)
+
+# Menampilkan 5 kota dengan pembeli terbanyak
+top_5_cities = top_customers_sorted.head(5)
+
+# Menampilkan subheader di aplikasi Streamlit
+st.subheader('Top 5 Cities with Most Unique Customers')
+
+# Langkah 3: Visualisasikan menggunakan seaborn
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(x='num_customers', y='customer_city', data=top_5_cities, palette='Blues_d', ax=ax)
+ax.set_title('Top 5 Cities with Most Unique Customers')
+ax.set_xlabel('Number of Unique Customers')
+ax.set_ylabel('Customer City')
+
+# Tampilkan visualisasi di Streamlit
+st.pyplot(fig)
+
+# Menampilkan tabel data di Streamlit untuk memverifikasi
+st.dataframe(top_5_cities)
+
