@@ -127,10 +127,10 @@ plt.colorbar(scatter)
 st.pyplot(fig)
 
 st.subheader('Product with the higher sold and the least sold')
-url = 'https://docs.google.com/spreadsheets/d/1MSHuclurFzm0IuNyCfdWDBgDvgUe9jSaTUkZnTLvc2s/export?format=csv&gid=1431532174'
+url = 'https://docs.google.com/spreadsheets/d/1G_jjZPavcbJhIkHRMbH1Z--OlMHABWbO8ymc5SBnqfQ/export?format=csv'
 product_sales = pd.read_csv(url)
-# Langkah 1: Kelompokkan data berdasarkan product_id dan hitung jumlah penjualan
-product_sales_count = product_sales.groupby('product_id')['quantity'].sum().reset_index()
+# Langkah 1: Kelompokkan data berdasarkan product_category_name dan hitung jumlah penjualan
+product_sales_count = product_sales.groupby('product_category_name')['quantity'].sum().reset_index()
 
 # Langkah 2: Ambil top 5 product yang terjual paling banyak dan paling sedikit
 top_5_most_sold = product_sales_count.nlargest(5, 'quantity')
@@ -140,13 +140,13 @@ top_5_least_sold = product_sales_count.nsmallest(5, 'quantity')
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 # Visualisasi untuk top 5 produk terjual paling banyak
-sns.barplot(x='quantity', y='product_id', data=top_5_most_sold, ax=axes[0], palette='Greens_d')
+sns.barplot(x='quantity', y='product_category_name', data=top_5_most_sold, ax=axes[0], palette='Greens_d')
 axes[0].set_title('Top 5 Most Sold Products')
 axes[0].set_xlabel('Quantity Sold')
 axes[0].set_ylabel('Product ID')
 
 # Visualisasi untuk top 5 produk terjual paling sedikit
-sns.barplot(x='quantity', y='product_id', data=top_5_least_sold, ax=axes[1], palette='Reds_d')
+sns.barplot(x='quantity', y='product_category_name', data=top_5_least_sold, ax=axes[1], palette='Reds_d')
 axes[1].set_title('Top 5 Least Sold Products')
 axes[1].set_xlabel('Quantity Sold')
 axes[1].set_ylabel('Product ID')
