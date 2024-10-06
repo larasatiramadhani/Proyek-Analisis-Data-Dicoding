@@ -1,6 +1,6 @@
 all_data = https://docs.google.com/spreadsheets/d/15D40JfmXEFwwAFVXudHgq9Cka8Erk9--AN-WPFNCHbQ/edit?gid=1564547850#gid=1564547850
 
-product_sales = https://docs.google.com/spreadsheets/d/1MSHuclurFzm0IuNyCfdWDBgDvgUe9jSaTUkZnTLvc2s/edit?usp=drive_link
+product_sales = https://docs.google.com/spreadsheets/d/1G_jjZPavcbJhIkHRMbH1Z--OlMHABWbO8ymc5SBnqfQ/edit?gid=2050178594#gid=2050178594
 
 purchase_time_df = https://docs.google.com/spreadsheets/d/1jLf4tAlvXfsa23IaOPKgivOObJbWNki_gv52n3SO4_g/edit?usp=drive_link
 
